@@ -3,6 +3,8 @@ package org.taib;
 import org.openqa.selenium.By;
 import org.taib.pom.base.BaseTest;
 import org.taib.pom.objects.BillingAddress;
+import org.taib.pom.objects.Products;
+import org.taib.pom.objects.User;
 import org.taib.pom.pages.HomePage;
 import org.taib.pom.pages.StorePage;
 import org.taib.pom.pages.CheckoutPage;
@@ -67,11 +69,11 @@ public class FirstTest extends BaseTest {
 
 
     @Test
-    public void checkoutBlueShoeRegisteredUser() throws InterruptedException {
-        HomePage homePage = new HomePage(driver)
-                .load();
-        homePage.clickOnStoreMenuLink();
-        StorePage storePage = new StorePage(driver);
+    public void checkoutBlueShoeRegisteredUser() throws InterruptedException, IOException {
+        StorePage storePage = new HomePage(driver)
+                .load()
+                .clickOnStoreMenuLink();
+        User user = new User("shangi.mangi@gmail.com");
 
         storePage.searchForProduct("Blue").clickSearchButton();
         Thread.sleep(3000);
@@ -83,7 +85,7 @@ public class FirstTest extends BaseTest {
         CheckoutPage checkoutPage = storePage.clickCheckout();
         checkoutPage.clickShowLogin();
         Thread.sleep(3000);
-        checkoutPage.login("shangi.mangi@gmail.com", "Test@123");
+        checkoutPage.login(user.getUsername(), user.getPassword());
         Thread.sleep(3000);
         checkoutPage.enterBillingFirstName("Shangi");
         checkoutPage.enterBillingLastName("Mangi");
@@ -233,6 +235,8 @@ public class FirstTest extends BaseTest {
 
         // JackSon usage using common method
         BillingAddress billingAddress = JacksonUtils.deserialize("MyBilling.json",BillingAddress.class);
+        Products product = new Products(1215);
+
 
 
         StorePage storePage = new HomePage(driver)
